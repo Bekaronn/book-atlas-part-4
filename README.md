@@ -1,4 +1,4 @@
-# 📚 BookAtlas Part#2
+# 📚 BookAtlas Part#3
 
 **BookAtlas** — это React-приложение для поиска и просмотра книг с помощью [OpenLibrary API](https://openlibrary.org/developers/api).  
 Теперь приложение поддерживает **Firebase Authentication** и управление профилем пользователя с `username`.

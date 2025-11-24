@@ -5,21 +5,42 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const nav = useNavigate();
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const normalizeError = (code) => {
+    switch (code) {
+      case "auth/invalid-credential":
+        return "Incorrect email or password.";
+      case "auth/user-not-found":
+        return "Incorrect email or password.";
+      case "auth/wrong-password":
+        return "Incorrect email or password.";
+      case "auth/too-many-requests":
+        return "Too many attempts. Try again later.";
+      default:
+        return "Login failed. Try again.";
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
+    setLoading(true);
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
       nav("/profile");
+
     } catch (err) {
-      setError(err.message);
+      const code = err?.code || "unknown";
+      setError(normalizeError(code));
+
+      setEmail("");
+      setPassword("");
     }
 
     setLoading(false);
@@ -44,9 +65,11 @@ export default function Login() {
               id="email"
               type="email"
               placeholder="example@gmail.com"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 
+                ${error ? "border-red-400 focus:ring-red-300" : "focus:ring-blue-400"}`}
             />
           </div>
 
@@ -58,20 +81,24 @@ export default function Login() {
               id="password"
               type="password"
               placeholder="Your password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 
+                ${error ? "border-red-400 focus:ring-red-300" : "focus:ring-blue-400"}`}
             />
           </div>
 
           {error && (
-            <p className="text-red-500 text-sm">{error}</p>
+            <div className="mb-4 p-3 bg-red-100 text-red-600 border border-red-300 rounded-md text-sm">
+              {error}
+            </div>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-70"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? "Logging in..." : "Login"}
           </button>

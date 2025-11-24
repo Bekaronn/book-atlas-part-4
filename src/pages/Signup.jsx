@@ -11,6 +11,22 @@ export default function Signup() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const normalizeError = (code) => {
+  switch (code) {
+      case "auth/email-already-in-use":
+        return "This email is already registered.";
+      case "auth/invalid-email":
+        return "Invalid email format.";
+      case "auth/weak-password":
+        return "Password is too weak.";
+      case "auth/missing-email":
+        return "Email is required.";
+      default:
+        return "Registration failed. Try again.";
+    }
+  };
+
+
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -27,7 +43,7 @@ export default function Signup() {
 
       nav("/profile");
     } catch (err) {
-      setError(err.message);
+      setError(normalizeError(code));
     }
 
     setLoading(false);
@@ -87,7 +103,11 @@ export default function Signup() {
             />
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 text-red-600 border border-red-300 rounded-md text-sm">
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"
