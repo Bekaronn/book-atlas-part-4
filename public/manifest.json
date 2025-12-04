@@ -3,7 +3,7 @@
   "short_name":"BookAtlas",
   "start_url": "/",
   "display":"standalone",
-  "theme_color":"#ffffff",
+  "theme_color":"#2563eb",
   "background_color":"#ffffff",
   "description": "A React application for searching and viewing books using OpenLibrary API",
   "icons":[
