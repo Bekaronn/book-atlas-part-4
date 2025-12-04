@@ -15,7 +15,7 @@ const APP_SHELL = [
 // Установка - кешируем App Shell
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open("shell-v1").then(cache => {
+    caches.open(SHELL_CACHE).then(cache => {
       return cache.addAll([
         APP_SHELL
       ]);
@@ -25,7 +25,6 @@ self.addEventListener("install", event => {
 
 // Активация - удаляем старые кеши и берем управление
 self.addEventListener('activate', event => {
-  console.log('[SW] Activating...');
   event.waitUntil(
     caches.keys().then(cacheNames => {
       Promise.all(
