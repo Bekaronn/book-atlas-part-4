@@ -7,28 +7,7 @@ import store from './store'
 
 // Регистрация Service Worker
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/service-worker.js')
-      .then(registration => {
-        console.log('✅ Service Worker зарегистрирован:', registration.scope)
-        
-        // Проверка обновлений
-        registration.addEventListener('updatefound', () => {
-          const newWorker = registration.installing
-          if (newWorker) {
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'activated') {
-                console.log('✅ Новый Service Worker активирован')
-              }
-            })
-          }
-        })
-      })
-      .catch(error => {
-        console.error('❌ Ошибка регистрации Service Worker:', error)
-      })
-  })
+  navigator.serviceWorker.register('/service-worker.js');
 }
 
 createRoot(document.getElementById('root')).render(
